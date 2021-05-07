@@ -61,16 +61,18 @@ static char im_bits[] = {{\n')
 def write_bitmap_lines(width, height):
     file_write = ""
     count = 0
-    term = width * height / 2
+    term = width * height / 4
 
     while(count < term - 1):
         if((count) % width == 0):
             file_write += "0x00, \n"
         elif(count % 61 == 0):
-            file_write += "0xff, "
+            file_write += "0x0c, "
+        #elif((count + 1) % 64 == 0):
+            #file_write += "0xff"
         else:
             file_write += "0x00, "
-        count += 2
+        count += 1
 
     file_write += "0x10 "
 
