@@ -24,8 +24,13 @@ class tkinterGUI:
         width= self.canvas_width, height = self.canvas_height, highlightbackground = "black")
         self.wavecanvas.place(relx = "0", rely = "0")
 
+        wavecanvas_width = self.canvas_width / 2
+        wavecanvas_height = self.canvas_height / 3
+        print(wavecanvas_width)
+        print(wavecanvas_height)
+
         self.canvas = tkinter.Canvas(window, bg="LightSteelBlue3", \
-        width=self.canvas_width/2,height = self.canvas_height/3)
+        width=wavecanvas_width,height = wavecanvas_height)
 
         #dividing to balance second canvas in the middle
         x_ratio = ((self.canvas_width) / self.canvas_width)/4
@@ -38,8 +43,8 @@ class tkinterGUI:
 
         print(f"bitmap: {bitmap}")
 
-        self.bitmap = self.canvas.create_bitmap("0", "0", anchor = "w", \
-        bitmap = f"@{bitmap}")
+        self.bitmap = self.canvas.create_bitmap("0", "0", anchor = "nw", \
+        bitmap = f"@{bitmap}", background = "green")
 
 def overwrite_bitmap(width, height):
     print(f"{width}\n{height}")
@@ -56,15 +61,18 @@ static char im_bits[] = {{\n')
 def write_bitmap_lines(width, height):
     file_write = ""
     count = 0
-    term = width * height
+    term = width * height / 2
 
     while(count < term - 1):
-        if((count + 1) % 16 == 0):
+        if((count) % width == 0):
             file_write += "0x00, \n"
+        elif(count % 61 == 0):
+            file_write += "0xff, "
         else:
             file_write += "0x00, "
-        count += 1
-    file_write += "0x00 "
+        count += 2
+
+    file_write += "0x10 "
 
     return file_write
 
