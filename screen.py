@@ -2,7 +2,8 @@
 
 import tkinter, tkinter.filedialog
 import os
-import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
 
 ROOT_DIR = os.path.dirname(os.path.abspath("screen.py"))
 os.chdir("..")
@@ -22,7 +23,7 @@ class tkinterGUI:
         print(self.__dict__)
 
         self.initialize_canvases(window)
-
+        plot()
         #self.initialize_bitmap(window)
 
 
@@ -40,10 +41,26 @@ class tkinterGUI:
         # smaller window
         self.canvas = tkinter.Canvas(window, bg="LightSteelBlue3", \
         width=self.wavecanvas_width,height = self.wavecanvas_height)
+
         #dividing to balance second canvas in the middle
         x_ratio = ((self.canvas_width) / self.canvas_width)/4
         y_ratio = ((self.canvas_height) / self.canvas_height)/6
         self.canvas.place(relx = f"{x_ratio}", x = "0", rely = f"{y_ratio}")
+
+def plot():
+    fig, ax = Figure(figsize = (5, 5), dpi = 100)
+    plot1 = ax.add_subplot(111)
+    y = [i**2 for i in range(100)]
+    plot1.plot(y)
+    canvas = FigureCanvasTkAgg(fig, master = self.canvas)
+    canvas.draw()
+
+    canvas.get_tk_widget().pack()
+
+    toolbar = NavigationToolbar2Tk(canvas, self.canvas)
+    toolbar.update()
+
+    canvas.get_tk_widget().pack()
 
 def main():
 
