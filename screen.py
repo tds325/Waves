@@ -2,6 +2,7 @@
 
 import tkinter, tkinter.filedialog
 import os
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -23,7 +24,7 @@ class tkinterGUI:
         print(self.__dict__)
 
         self.initialize_canvases(window)
-        plot()
+        plot(self.canvas)
         #self.initialize_bitmap(window)
 
 
@@ -47,20 +48,20 @@ class tkinterGUI:
         y_ratio = ((self.canvas_height) / self.canvas_height)/6
         self.canvas.place(relx = f"{x_ratio}", x = "0", rely = f"{y_ratio}")
 
-def plot():
-    fig, ax = Figure(figsize = (5, 5), dpi = 100)
-    plot1 = ax.add_subplot(111)
+def plot(root):
+    fig = plt.Figure(figsize = (5, 5), dpi = 100)
+    plot1 = fig.add_subplot(111)
     y = [i**2 for i in range(100)]
     plot1.plot(y)
-    canvas = FigureCanvasTkAgg(fig, master = self.canvas)
+    canvas =  matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master = root)
     canvas.draw()
 
     canvas.get_tk_widget().pack()
 
-    toolbar = NavigationToolbar2Tk(canvas, self.canvas)
-    toolbar.update()
+    #toolbar =  matplotlib.backends.backend_tkagg.NavigationToolbar2Tk(canvas, root)
+    #toolbar.update()
 
-    canvas.get_tk_widget().pack()
+    #canvas.get_tk_widget().pack()
 
 def main():
 
