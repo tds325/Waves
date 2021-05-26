@@ -21,7 +21,7 @@ class tkinterGUI:
         self.wavecanvas_width = self.canvas_width / 2
         self.wavecanvas_height = self.canvas_height / 3
 
-        print(self.__dict__)
+        #print(self.__dict__)
 
         self.initialize_canvases(window)
         plot(self.canvas)
@@ -49,19 +49,25 @@ class tkinterGUI:
         self.canvas.place(relx = f"{x_ratio}", x = "0", rely = f"{y_ratio}")
 
 def plot(root):
-    fig = plt.Figure(figsize = (5, 5), dpi = 100)
-    plot1 = fig.add_subplot(111)
-    y = [i**2 for i in range(100)]
-    plot1.plot(y)
-    canvas =  matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master = root)
-    canvas.draw()
 
-    canvas.get_tk_widget().pack()
+    fig, ax = plt.subplots(figsize=(5, 3))
+    print(type(fig))
+    print(type(ax))
+    #ax.box_aspect = 1.612
 
-    #toolbar =  matplotlib.backends.backend_tkagg.NavigationToolbar2Tk(canvas, root)
-    #toolbar.update()
+    #fig = plt.Figure(figsize = (5, 2.5), dpi = 100)
+    #plot1 = fig.add_subplot(111)
+    #y = [np.cos(i) for i in range(int(2*np.pi))]
+    #plot1.plot(y)
+    #canvas =  matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master = root)
+    #canvas.draw()
 
     #canvas.get_tk_widget().pack()
+
+    ##toolbar =  matplotlib.backends.backend_tkagg.NavigationToolbar2Tk(canvas, root)
+    ##toolbar.update()
+
+    ##canvas.get_tk_widget().pack()
 
 def main():
 
@@ -70,8 +76,9 @@ def main():
 
     gui = tkinterGUI(root)
     root.mainloop()
-
-
+    #root.destroy()
+    plt.close()
+    
 if __name__ == '__main__':
     main()
 
