@@ -3,8 +3,12 @@
 import tkinter, tkinter.filedialog
 import os
 import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import numpy as np
+
+#import logging
+#logging.debug("hello there")
 
 ROOT_DIR = os.path.dirname(os.path.abspath("screen.py"))
 os.chdir("..")
@@ -25,6 +29,7 @@ class tkinterGUI:
 
         self.initialize_canvases(window)
         plot(self.canvas)
+
         #self.initialize_bitmap(window)
 
 
@@ -49,11 +54,27 @@ class tkinterGUI:
         self.canvas.place(relx = f"{x_ratio}", x = "0", rely = f"{y_ratio}")
 
 def plot(root):
+    time = np.arange(0, 10, 0.1)
+    amplitude = np.sin(time)
 
     fig, ax = plt.subplots(figsize=(5, 3))
     print(type(fig))
     print(type(ax))
-    #ax.box_aspect = 1.612
+    ax.box_aspect = 1.612
+    plot = fig.add_subplot()
+    plt.plot(time, amplitude)
+
+    #plot.xlabel('Time')
+    #plot.ylabel('Amplitude')
+    #plot.grid(True, which = 'both')
+    #plot.axhline(y = 0, color = 'k')
+    #plot.show()
+    
+    canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master = root)
+    canvas.draw()
+    canvas.get_tk_widget().pack()
+    plt.close()
+
 
     #fig = plt.Figure(figsize = (5, 2.5), dpi = 100)
     #plot1 = fig.add_subplot(111)
@@ -64,10 +85,10 @@ def plot(root):
 
     #canvas.get_tk_widget().pack()
 
-    ##toolbar =  matplotlib.backends.backend_tkagg.NavigationToolbar2Tk(canvas, root)
-    ##toolbar.update()
+    #toolbar =  matplotlib.backends.backend_tkagg.NavigationToolbar2Tk(canvas, root)
+    #toolbar.update()
 
-    ##canvas.get_tk_widget().pack()
+    #canvas.get_tk_widget().pack()
 
 def main():
 
@@ -76,9 +97,10 @@ def main():
 
     gui = tkinterGUI(root)
     root.mainloop()
+    quit()
     #root.destroy()
-    plt.close()
-    
+    #plt.close()
+
 if __name__ == '__main__':
     main()
 
