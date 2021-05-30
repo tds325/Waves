@@ -54,41 +54,35 @@ class tkinterGUI:
         self.canvas.place(relx = f"{x_ratio}", x = "0", rely = f"{y_ratio}")
 
 def plot(root):
+
+    y_axis_buffer_ratio = 11/10
     time = np.arange(0, 10, 0.1)
     amplitude = np.sin(time)
+    #print(time)
+    #print(amplitude)
 
-    fig, ax = plt.subplots(figsize=(5, 3))
+    fig, ax = plt.subplots(figsize=(5, 4))
+
+    ax.set_title('Wave function')
+    ax.set_ylabel('Amplitude')
+    ax.set_xlabel('Time')
+
     print(type(fig))
     print(type(ax))
-    ax.box_aspect = 1.612
-    plot = fig.add_subplot()
+
+
     plt.plot(time, amplitude)
 
-    #plot.xlabel('Time')
-    #plot.ylabel('Amplitude')
-    #plot.grid(True, which = 'both')
-    #plot.axhline(y = 0, color = 'k')
-    #plot.show()
-    
+
+    plt.xlim([time.min(), time.max()])
+    plt.ylim([amplitude.min() * y_axis_buffer_ratio, amplitude.max() * y_axis_buffer_ratio])
+    plt.xticks(np.arange(min(time), max(time) + 1, 1.0))
+
     canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master = root)
     canvas.draw()
     canvas.get_tk_widget().pack()
+
     plt.close()
-
-
-    #fig = plt.Figure(figsize = (5, 2.5), dpi = 100)
-    #plot1 = fig.add_subplot(111)
-    #y = [np.cos(i) for i in range(int(2*np.pi))]
-    #plot1.plot(y)
-    #canvas =  matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master = root)
-    #canvas.draw()
-
-    #canvas.get_tk_widget().pack()
-
-    #toolbar =  matplotlib.backends.backend_tkagg.NavigationToolbar2Tk(canvas, root)
-    #toolbar.update()
-
-    #canvas.get_tk_widget().pack()
 
 def main():
 
@@ -98,69 +92,6 @@ def main():
     gui = tkinterGUI(root)
     root.mainloop()
     quit()
-    #root.destroy()
-    #plt.close()
 
 if __name__ == '__main__':
     main()
-
-
-
-    #def initialize_bitmap(self, window):
-        # 'overwrite_bitmap' returns the file name of the bitmap
-        #filename = overwrite_bitmap(self.canvas_width, self.canvas_height)
-
-        # filename of bitmap found using os - Root directory -> xbm file
-        #bitmap = os.path.join(ROOT_DIR, filename)
-
-        #print(f"bitmap: {bitmap}")
-
-        # bitmap created in tkinter using its 'create_bitmap' method
-        #self.bitmap = self.canvas.create_bitmap("0", "0", anchor = "w", \
-        #bitmap = f"@{bitmap}", background = "green")
-
-# after writing initial bitmap boilerplate, loops through and writes each
-# '0xXX' term to be displayed in the file - returns the string to be written
-# in the bitmap file in object
-#def overwrite_bitmap(width, height):
-    # print(f"{width}\n{height}")
-    #filename = "bitmap.xbm"
-    #file = open(f"{ROOT_DIR}\{filename}", "w")
-
-    #file.write(f'#define im_width {width}\n#define im_height {height}\n\
-#static char im_bits[] = {{\n')
-
-    #ans = write_bitmap_lines(width, height)
-    #file.write(f"{ans}}};")
-
-    #file.close()
-
-    #return filename
-
-# given the width and height of the bitmap, return a string of the bitmap
-# values to be written in the xbm file
-#def write_bitmap_lines(width, height):
-    #width=485
-    #height=200
-    #print(f"\twidth: {width}\n\theight: {height}")
-    #file_write = ""
-    #count = 0
-    #innercount = 0
-    #term = 73200
-
-    #test = "0x01, 0x03, 0x07, 0x0f, 0x1f, 0x3f, 0x7f, 0xff, "
-    #for count in range(int(term / 8) - 1):
-        #for innercount in range(8):
-            #count += 1
-        #file_write += test
-
-    #file_write += "0x00, "
-    #file_write += "0x00, "
-    #file_write += "0x00, "
-    #file_write += "0x00, "
-    #file_write += "0x00, "
-    #file_write += "0x00, "
-    #file_write += "0x00, "
-    #file_write += "0x00 "
-    #print(f"\tcount: {count}")
-    #return file_write
