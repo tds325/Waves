@@ -1,15 +1,15 @@
 #!/usr/bin/python
-
+#------------------Imports
 import tkinter, tkinter.filedialog
 import os
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import numpy as np
+#------------------End of Imports
+
 data = matplotlib.lines.Line2D
 anim = matplotlib.animation.FuncAnimation
-#import logging
-#logging.debug("hello there")
 
 ROOT_DIR = os.path.dirname(os.path.abspath("screen.py"))
 os.chdir("..")
@@ -26,14 +26,6 @@ class tkinterGUI:
         self.wavecanvas_width = self.canvas_width / 2
         self.wavecanvas_height = self.canvas_height / 3
 
-        #print(self.__dict__)
-
-        self.initialize_canvases(window)
-        plot(self.canvas)
-
-        #self.initialize_bitmap(window)
-
-
     def initialize_canvases(self, window):
         # gui window properties
         self.window = window
@@ -48,17 +40,20 @@ class tkinterGUI:
         # smaller window
         self.canvas = tkinter.Canvas(window, bg="LightSteelBlue3", \
         width=self.wavecanvas_width,height = self.wavecanvas_height)
-
+#
         #dividing to balance second canvas in the middle
         x_ratio = ((self.canvas_width) / self.canvas_width)/4
         y_ratio = ((self.canvas_height) / self.canvas_height)/6
         self.canvas.place(relx = f"{x_ratio}", x = "0", rely = f"{y_ratio}")
 
-def plot(root):
+# implements matplotlib onto tkinter gui
+def plot(root, x):
 
     y_axis_buffer_ratio = 11/10
+
     time = np.arange(0, 10, 0.1)
     amplitude = np.sin(time)
+
     print(time)
     print(amplitude)
 
@@ -69,19 +64,20 @@ def plot(root):
     ax.set_ylabel('Amplitude')
     ax.set_xlabel('Time')
 
-    #print(type(fig))
-    #print(type(ax))
-
     data = plt.plot(time, amplitude)
     plt.xlim([time.min(), time.max()])
     plt.ylim([amplitude.min() * y_axis_buffer_ratio, amplitude.max() * y_axis_buffer_ratio])
-    plt.xticks(np.arange(min(time), max(time) + 1, 1.0))
+    #plt.xticks(np.arange(min(time), max(time) + 1, 1.0))
     #anim = matplotlib.animation.FuncAnimation(fig, animate, init_func=init, frames = 200, interval = 20, blit = True)
 
     canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master = root)
-    canvas.draw()
+    line, = ax.plot(x, np.sin(x))
+    print(line)
+    #canvas.draw()
     canvas.get_tk_widget().pack()
-    plt.close()
+    ani = matplotlib.animation.FuncAnimation(fig, animate, np.arange(1, 200), interval = 25, blit = False, cache_frame_data = True, fargs = (line, x))
+    #plt.close()
+    return (ani, line)
 
 def update(root):
     time = np.arange(0, 10, 0.1)
@@ -98,20 +94,32 @@ def init():
     #line.set_data([],[])
     #return line
 
-def animate(i):
-    x = np.linespace(0,4, 1000)
-    y = np.sin(2 * np.pi * (x - 0.01 * i))
-    line.set_data(x, y)
+def animate(i, line, x):
+    line.set_ydata(np.sin(x+i / 10.0))
     return line
+    #x = np.linespace(0, 4, 1000)
+    #y = np.sin(2 * np.pi * (x - 0.01 * i))
+    #line.set_data(x, y)
+    #return line
 
 def main():
+
+    fig = plt.Figure()
+    x = np.arange(0, 2*np.pi, 0.01)
 
     root = tkinter.Tk()
     root.resizable(False, False)
     root.wm_attributes("-topmost", 1)
     gui = tkinterGUI(root)
 
-    root.after(16, update(root))
+    gui.initialize_canvases(root)
+    ani, line = plot(gui.canvas, x)
+    print(ani)
+    def animate(i):
+        line.set_ydata(np.sin(x + i/10.0))
+        return line
+
+    #root.after(16, update(root))
     root.mainloop()
 
     quit()
