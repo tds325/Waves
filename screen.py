@@ -51,42 +51,34 @@ def plot(root, x):
 
     y_axis_buffer_ratio = 11/10
 
-    time = np.arange(0, 10, 0.1)
+    time = np.arange(0, 2 * np.pi, 0.01)
     amplitude = np.sin(time)
 
-    print(time)
-    print(amplitude)
-
     fig, ax = plt.subplots(figsize=(5, 4))
-    #line, = ax.plot([],[], lw = 3)
 
     ax.set_title('Wave function')
     ax.set_ylabel('Amplitude')
     ax.set_xlabel('Time')
 
-    #data = plt.plot(time, amplitude)
     plt.xlim([time.min(), time.max()])
     plt.ylim([amplitude.min() * y_axis_buffer_ratio, amplitude.max() * y_axis_buffer_ratio])
-    #plt.xticks(np.arange(min(time), max(time) + 1, 1.0))
-    #anim = matplotlib.animation.FuncAnimation(fig, animate, init_func=init, frames = 200, interval = 20, blit = True)
 
     canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master = root)
     line, = ax.plot(x, np.sin(x))
-    print(line)
-    #canvas.draw()
+
     canvas.get_tk_widget().pack()
     ani = matplotlib.animation.FuncAnimation(fig, animate, np.arange(1, 200), interval = 25, blit = False, cache_frame_data = True, fargs = (line, x))
-    #plt.close()
+
     return (ani, line)
 
-def update(root):
-    time = np.arange(0, 10, 0.1)
-    amplitude = np.sin(time + 9)
-    data.xdata = time
-    data.ydata = amplitude
-
-    print(data.xdata)
-    print(data.ydata)
+#def update(root):
+#    time = np.arange(0, 10, 0.1)
+#    amplitude = np.sin(time + 9)
+#    data.xdata = time
+#    data.ydata = amplitude
+#
+#    print(data.xdata)
+#    print(data.ydata)
 
 def animate(i, line, x):
     line.set_ydata(np.sin(x+i / 10.0))
@@ -108,7 +100,7 @@ def main():
 
     gui.initialize_canvases(root)
     ani, line = plot(gui.canvas, x)
-    print(ani)
+
     def animate(i):
         line.set_ydata(np.sin(x + i/10.0))
         return line
