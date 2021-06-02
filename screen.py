@@ -3,7 +3,7 @@
 import tkinter, tkinter.filedialog
 import os
 import matplotlib
-matplotlib.use('TkAgg')
+matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 import numpy as np
 #------------------End of Imports
@@ -64,7 +64,7 @@ def plot(root, x):
     ax.set_ylabel('Amplitude')
     ax.set_xlabel('Time')
 
-    data = plt.plot(time, amplitude)
+    #data = plt.plot(time, amplitude)
     plt.xlim([time.min(), time.max()])
     plt.ylim([amplitude.min() * y_axis_buffer_ratio, amplitude.max() * y_axis_buffer_ratio])
     #plt.xticks(np.arange(min(time), max(time) + 1, 1.0))
@@ -88,19 +88,12 @@ def update(root):
     print(data.xdata)
     print(data.ydata)
 
-
-def init():
-    pass
-    #line.set_data([],[])
-    #return line
-
 def animate(i, line, x):
     line.set_ydata(np.sin(x+i / 10.0))
     return line
-    #x = np.linespace(0, 4, 1000)
-    #y = np.sin(2 * np.pi * (x - 0.01 * i))
-    #line.set_data(x, y)
-    #return line
+
+def end():
+    quit()
 
 def main():
 
@@ -110,6 +103,7 @@ def main():
     root = tkinter.Tk()
     root.resizable(False, False)
     root.wm_attributes("-topmost", 1)
+    root.protocol("WM_DELETE_WINDOW", end)
     gui = tkinterGUI(root)
 
     gui.initialize_canvases(root)
@@ -119,9 +113,8 @@ def main():
         line.set_ydata(np.sin(x + i/10.0))
         return line
 
-    #root.after(16, update(root))
     root.mainloop()
-
+    plt.close('all')
     quit()
 
 if __name__ == '__main__':
